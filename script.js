@@ -1,6 +1,7 @@
 let randomNumber = Math.floor(Math.random() * 100) + 1;
 let attempts = 10;
 let gameOver = false;
+let guessList = [];
 
 function checkGuess() {
   if (attempts <= 0 || gameOver) return;
@@ -8,13 +9,21 @@ function checkGuess() {
   attempts--;
   const inputElement = document.getElementById("guess");
   const feedbackElement = document.getElementById("feedback");
+  const previousGuessesElement = document.getElementById("previous-guesses");
   const guess = Number(inputElement.value);
   
-  if (isNaN(guess) || guess < 1 || guess > 100) {
+  if (isNaN(guess) || guess < 1 || guess > 1000) {
     feedbackElement.innerHTML = "⚠️ Please enter a number between 1 and 100!";
     feedbackElement.style.color = "orange";
     return;
   }
+
+  guessList.push(guess);
+            const listItem = document.createElement("li");
+            listItem.classList.add("list-group-item");
+            listItem.textContent = `Attempt ${10 - attempts}: ${guess}`;
+            previousGuessesElement.appendChild(listItem);
+            inputElement.value = "";
 
   if (randomNumber === guess) {
     gameOver = true;
@@ -37,4 +46,9 @@ function checkGuess() {
     inputElement.disabled = true;
     
   }
+}
+
+function addNumber(num) {
+  const inputElement = document.getElementById("guess");
+  inputElement.value += num;
 }
